@@ -1,0 +1,83 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{tkz-graph}
+\usepackage{graphicx}
+
+\title{Interpolation de Lagrange multivariée}
+\author{RANAIVOARISOA Manoa Velotsara Irma}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Introduction}
+L'interpolation consiste à construire une fonction passant par un ensemble de points de données. Cette fonction est souvant un polynôme. Le but ici est de présenter une analogie m de la formule de Lagrange pour les fonctions à plusieurs variables.On veut construire un polynôme multinomiale à p variables $P(x=x_1,\cdots,x_p)$ de degré total n interpolant une fonction à p variables.
+
+\section{Interpolation de Lagrange dans le cas 1D}
+La méthode de Lagrange nous à donner un polynôme p(x) de degrée n interpolant $n+1$ points distincts $(x_i, y_i)$ dans $\mathbb{R}^2$:
+\begin{equation} 
+y = P(x) = \sum_{i=1}^{n+1} y_i \cdot l_i(x) 
+\end{equation}  
+Les $l_i(x)$ forment les polynôme de base de Lagrangre. Ils sont définis par:
+\begin{equation}
+l_i(x)= \prod_{j=1, j \neq i}^{n+1} \frac{x - x_j}{x_i - x_j}
+\end{equation}
+Lorsqu'on substitue $x$ par $x_i$, on obtient $l_i(x_i) = 1$ et $l_j(x_i) = 0$ pour $j \neq i$, donnant ainsi $y = y_i$
+L'avantage de cette méthode est que l'interpolant peut être écrit immédiatement sous forme explicite sans avoir à calculer de coefficients préalables (contrairement à la méthode de Newton). De plus, ce polynôme d'interpolation est unique.
+
+\section{Le nombre de points nécessaire}
+Dénombrons les termes nécessaire pour définir de maniére unique le polynôme multivariée $P(x)$ de p variables et de degrée n. Le terme général d'une telle fonction est de la forme $a_v(x^{e_1}_1,\cdots,x^{e_p}_p)=a_v\prod_{i=1}^{p}x^{e_i}_i$ avec $a_v$ le coefficient du monôme et $|v| = (e_1,\cdots,e_p)$ un p-uplet d'entiers naturels avec les $e_i$ représentant les exposants.La condition pour que la fonction soit de degré n est que la somme de ces exposants soit inférieure ou égale à n càd $ {\sum_{i=1}^{p}e_i}\leq n$. Déterminer le nombre de points nécessaires pour définir cette fonction revient à compter le nombre total de partitions ordonnées des entiers compris entre 0 et n en p parties positives ou nulles et revient également à déterminer le nombre de coefficient $a_v$ associé à chaque monôme de $P(x)$. Notons par $k$ ce nombre.\\
+\\
+Pour déterminer $k$, construisons une grille de taille $p \times n$ dont les sommets sont des couples d'entier $(i,j)$ avec $0 \leq i \leq n$ et $0 \leq j \leq p$.\\
+\\
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \begin{tikzpicture}[scale=1, every node/.style={scale=0.8}]
+    % Grille de fond
+    \draw[step=1cm, gray!20, very thin] (0,0) grid (6,3);
+    
+    % Axes directionnels
+    \draw[->, thick] (0,0) -- (7,0) node[right] {Degré (Puissances)};
+    \draw[->, thick] (0,0) -- (0,4) node[above] {Variables ($X_1 \dots X_p$)};
+
+    % Marquage des sommets principaux
+    \filldraw (0,0) circle (2pt) node[below left] {Source (0,0)};
+    \filldraw (6,3) circle (2pt) node[above right] {Cible ($n,p$)};
+
+    % Dessin d'un chemin spécifique (Exemple de monôme)
+    % Exemple : X1^2 * X2^3 * X3^1
+    \draw[ultra thick, red, ->] (0,0) -- (2,0) -- (2,1) -- (5,1) -- (5,2) -- (6,2) -- (6,3);
+
+    % Libellé des étapes du chemin
+    \node[red, anchor=south west] at (2.5, 1.2) {Chemin $\implies$ monôme unique};
+    
+\end{tikzpicture}
+    \end{tikzpicture}
+    \caption{Représentation graphique du dénombrement}
+\end{figure}
+Chaque sommet $(i,j)$ représente l'état où l'on a distribué $i$ unités de degré parmi les $j$ premières variables. 
+Le graphe permet que deux types de déplacements pour construire un monôme $\prod_{i=1}^{p}x^{e_i}_i$: \\
+\textbf{Déplacement horizontale vers la droite:} $(i,j) \rightarrow (i+1,j)$ ajouter un degré à la variable $x_j$\\
+\textbf{Déplacement vertical vers le haut:} $(i,j) \rightarrow (i,j+1)$ qui représente le passage à la variable suivante càd le passage de $x_j$ à $x_{j+1}$.\\
+Chaque chemin est composée d'une séquence unique de déplacement pour aller de $(0,0)$ vers $(n,p)$.Ainsi, chaque chemin correspond à un monôme dont la somme des exposants est inférieure ou égale à n.\\
+La longueur totale de chaque chemin est nécessairement $n+p$. A chaque chemin, on doit montée $p$ fois (car on doit parcourrir toutes les variables ) et aller vers la droite $n$ fois (ajout d'une unité de degré).\\
+Le nombre des chemins distincts (et donc le nombre de monôme) est le nombre de façons de choisir l'ordre de ces n+p segments:
+\begin{equation}
+	k= \frac{(n+p)!}{n!\cdot p!} = \binom{n+p}{n} = \binom{n+p}{p}
+\end{equation}
+
+\section{Le cas des fonctions à plusieurs variables:}
+Le nombre $k=\binom{n+p}{n}$ étant celui définie dans la section précédente.
+Pour généraliser la formule de Lagrange à $\mathbb{R}^p$ (càd pour une fonction $f$ à $p$ variables), on cherche à construire $P(x=(x_1,\cdots,x_p))$ de degrée $n$ interpolant la fonction $f$. Il est donc nécessaire pour l'unicité de $P(x)$ d'avoir k points distincts
+$(x_{1_i},\cdots,x_{p_i},f_i) \in \mathbb{R}^{p+1}$ avec $1 \leq i \leq k$ et $f_i=f(x_{1_i},\cdots,x_{p_i})$. Ce $P(x)$ a pour forme:
+\begin{equation}
+	P(x)=\sum_{v_i, 1 \leq i \leq k }^{} a_{v_i} \cdot x^{v_i}
+\end{equation}
+où  $x=(x_1, \cdots,x_p)$ est la variable, $a_{v_i}$ sont les coefficients des monômes de P, $v_i=(e_{1_i}, \cdots,e_{p_i})$ un p-uplet d'entiers naturels avec chaque élément de $v_i$ vérifiant $0 \leq e_{j_i} \leq n$ tel que $\sum_{j=1}^{p}e_{j_i} \leq n$ pour tout $1\leq i\leq k$; et pour tout $1 \leq j \leq p$  $e_{j_i}$ est l'éxposant de $x_j$ tel que $x^{v_i}=\prod_{j=1}^{p}x_j^{e_{j_i}}$.\\
+
+
+\end{document}
