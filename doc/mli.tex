@@ -6,12 +6,15 @@
 \usepackage{tkz-graph}
 \usepackage{graphicx}
 
+
 \title{Interpolation de Lagrange multivariée}
 \author{RANAIVOARISOA Manoa Velotsara Irma}
 \date{\today}
 
 \begin{document}
 \maketitle
+
+
 \section{Introduction}
 L'interpolation consiste à construire une fonction passant par un ensemble de points de données. Cette fonction est souvant un polynôme. Le but ici est de présenter une analogie m de la formule de Lagrange pour les fonctions à plusieurs variables.On veut construire un polynôme multinomiale à p variables $P(x=x_1,\cdots,x_p)$ de degré total n interpolant une fonction à p variables.
 
@@ -72,12 +75,87 @@ Le nombre des chemins distincts (et donc le nombre de monôme) est le nombre de 
 
 \section{Le cas des fonctions à plusieurs variables:}
 Le nombre $k=\binom{n+p}{n}$ étant celui définie dans la section précédente.
-Pour généraliser la formule de Lagrange à $\mathbb{R}^p$ (càd pour une fonction $f$ à $p$ variables), on cherche à construire $P(x=(x_1,\cdots,x_p))$ de degrée $n$ interpolant la fonction $f$. Il est donc nécessaire pour l'unicité de $P(x)$ d'avoir k points distincts
-$(x_{1_i},\cdots,x_{p_i},f_i) \in \mathbb{R}^{p+1}$ avec $1 \leq i \leq k$ et $f_i=f(x_{1_i},\cdots,x_{p_i})$. Ce $P(x)$ a pour forme:
+Pour généraliser la formule de Lagrange à $\mathbb{R}^p$ (càd pour une fonction $f$ à $p$ variables), on cherche à construire $P(x=(x_1,\cdots,x_p))$ de degrée $n$ interpolant la fonction $f$. Il est donc nécessaire pour l'unicité de $P(x)$ d'avoir k points distincts $x_i = (x_{1_i},\cdots,x_{p_i},f_i) \in \mathbb{R}^{p+1}$ avec $1 \leq i \leq k$ et $f_i=f(x_{1_i},\cdots,x_{p_i})$. Ce $P(x)$ a pour forme:
 \begin{equation}
 	P(x)=\sum_{v_i, 1 \leq i \leq k }^{} a_{v_i} \cdot x^{v_i}
 \end{equation}
-où  $x=(x_1, \cdots,x_p)$ est la variable, $a_{v_i}$ sont les coefficients des monômes de P, $v_i=(e_{1_i}, \cdots,e_{p_i})$ un p-uplet d'entiers naturels avec chaque élément de $v_i$ vérifiant $0 \leq e_{j_i} \leq n$ tel que $\sum_{j=1}^{p}e_{j_i} \leq n$ pour tout $1\leq i\leq k$; et pour tout $1 \leq j \leq p$  $e_{j_i}$ est l'éxposant de $x_j$ tel que $x^{v_i}=\prod_{j=1}^{p}x_j^{e_{j_i}}$.\\
+où  $x=(x_1, \cdots,x_p)$ est la variable, $a_{v_i}$ sont les coefficients des monômes de P, $v_i=(e_{1_i}, \cdots,e_{p_i})$ un p-uplet d'entiers naturels avec chaque élément de $v_i$ vérifiant $0 \leq e_{j_i} \leq n$ tel que $\sum_{j=1}^{p}e_{j_i} \leq n$ pour tout $1\leq i\leq k$; et pour tout $1 \leq j \leq p$   $e_{j_i}$ est l'éxposant de $x_j$ tel que $x^{v_i}=\prod_{j=1}^{p}x_j^{e_{j_i}}$.\\
+On veut écrire $P(x)$ comme $\sum_{i=1}^{p}f_i\cdot l_i(x)$ avec les $l_i(x)$ des polynôme multivariées tel que si $x = (x_1,\cdots ,x_p) = x_i = (x_{1_i},\cdots ,x_{p_i})$ alors $l_i(x_i) = 1$ et $l_i(x_j) = 0$ si $i \neq j$.\\
+Pour construire $P(x)$ dans cette forme,nous devons déterminer les $a_{v_i}$. On écrit les égalités $P(x_i) = f_i$ pour chaque $1 \leq i \leq k$ et on obtient le système d'équation linéaire suivant:
+\[
+\begin{cases}
+	f_1 &= a_{v_1} x_1^{v_1} + \cdots + a_{v_k} x_1^{v_k}\\
+    f_2 &= a_{v_1} x_2^{v_1} + \cdots + a_{v_k} x_2^{v_k}\\
+   		&\vdots \\
+    f_k &= a_{v_1} x_k^{v_1} + \cdots + a_{v_k} x_k^{v_k}\\
+\end{cases}
+\]
+Sous forme matricielle, le système s'écrit $Ma=f$ avec :
+\[
+\mathbf{M} =\begin{pmatrix}
+	x_1^{v_1} & x_1^{v_2} & \cdots & x_1^{v_k}\\
+    x_2^{v_1} & x_2^{v_2} & \cdots & x_2^{v_k}\\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_k^{v_1} & x_k^{v_2} & \cdots & x_k^{v_k}\\
+   \end{pmatrix}
+\]
+
+\[
+\mathbf{a}= \begin{pmatrix}
+    a_{v_1} \\ 
+    a_{v_2} \\ 
+    \vdots \\ 
+    a_{v_k}
+    		\end{pmatrix}
+\]
+
+\[
+\mathbf{f}= \begin{pmatrix}
+    f_1 \\ 
+    f_2 \\ 
+    \vdots \\ 
+    f_k
+    		\end{pmatrix}
+\]
+
+Si le déterminant de $M$ est non nulle, le système admet une solution unique et donc le polynôme d'interpolatrion $P(x)$ l'est aussi.
+Cela n'est possible que si les k points $ x_i = (x_{1_i}, \cdots ,x_{p_i},f_i)$ de $\mathbb{R}^{p+1}$ sont deux à deux dictincts.\\
+Posons $\Delta = det (M)$. Remplaçons la $j$-iéme ligne de $\mathbf{M}$ par la variable $ x = (x_1, \cdots ,x_p)$, on obtient alors la matrice $\mathbf{M_j(x)}$ définie par:
+
+\[
+\mathbf{M_j(\mathbf{x})} =\begin{pmatrix}
+	x_1^{v_1} & x_1^{v_2} & \cdots & x_1^{v_k}\\
+    x_2^{v_1} & x_2^{v_2} & \cdots & x_2^{v_k}\\
+    \vdots & \vdots & \ddots & \vdots \\
+    \mathbf{x}^{v_1} & \mathbf{x}^{v_2} & \cdots & \mathbf{x}^{v_k}\\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_k^{v_1} & x_k^{v_2} & \cdots & x_k^{v_k}\\
+   \end{pmatrix}
+\]
+
+Posons $ \Delta_j(x)= det(M_j(x))$. Si on évalue $M_j(x)$ au points $x_i$ avec $x_i \neq x_j$, on obtient la matrice suivante:
+
+\[
+\mathbf{M_j(\mathbf{x_i})} =\begin{pmatrix}
+	x_1^{v_1} & x_1^{v_2} & \cdots & x_1^{v_k}\\
+    x_2^{v_1} & x_2^{v_2} & \cdots & x_2^{v_k}\\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_i^{v_1} & x_i^{v_2} & \cdots & x_i^{v_k}\\
+    \vdots & \vdots & \ddots & \vdots \\
+    \mathbf{x_i}^{v_1} & \mathbf{x_i}^{v_2} & \cdots & \mathbf{x_i}^{v_k}\\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_k^{v_1} & x_k^{v_2} & \cdots & x_k^{v_k}\\
+   \end{pmatrix}
+\]
+
+Il est clair que $det(\mathbf{M_j(x_i)})=0$ càd que si $\mathbf{x}= x_i$ avec $i \neq j$, on a $\Delta_j(x_i)=0$ et si $x= x_j$, on obtient $\Delta_j(x=x_j)= \Delta$. Ainsi, on obtient:
+\begin{equation}
+	l_i(x)= \frac{\Delta_i(x)}{\Delta}
+\end{equation}
+Finalement, on a:
+\begin{equation}
+	\mathbf{P(x)}= \sum_{i=1}^{k} \mathbf{f_i \cdot l_i(x)} = \sum_{i=1}^{k} \mathbf{f_i \cdot \frac{\Delta_i(x)}{\Delta} }
+\end{equation}
 
 
 \end{document}
